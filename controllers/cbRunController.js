@@ -1,12 +1,15 @@
 const Models = require('../models');
 
 async function upload(json) {
-  // this function will upload the json data into the sequelize database, assuming that the index file will already have it and not need a file upload
-  json.forEach(async (el) => {
+  let entries = 0;
+  let dupes = 0;
+  await json.map(async (el) => {
     try {
       let dupe = await Models.CB.findOne({ where: { history_id: el.history_id } });
-      if (dupe)
+      if (dupe) {
+        dupes++;
         throw 'already in the system';
+      }
       let entry = await Models.CB.create({
         enemy_id: el.enemy_id,
         name: el.name,
@@ -17,11 +20,13 @@ async function upload(json) {
         lap_num: el.lap_num
       })
       console.log(`Added run ${entry.history_id}`);
+      entries++;
     } catch (e) {
       console.log('at post:', e);
     }
   });
   console.log(json[0]);
+  return [entries, dupes];
 }
 
-module.exports = upload
+module.exports = upload;
