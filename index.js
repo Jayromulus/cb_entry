@@ -8,7 +8,7 @@ app.use(require('express').json());
 app.use(Middleware.Headers);
 
 app.use('/', async (req, res) => {
-  let result = await Controllers.CB(req.body.data.damage_history, res);
+  let result = await Controllers.CB(req.body, res);
   res.send('db updated');
 });
 

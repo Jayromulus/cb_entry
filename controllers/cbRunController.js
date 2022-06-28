@@ -11,13 +11,16 @@ async function upload(json) {
         throw 'already in the system';
       }
       let entry = await Models.CB.create({
+        viewer_id: el.viewer_id,
         enemy_id: el.enemy_id,
         name: el.name,
         damage: el.damage,
         kill: el.kill === 1 ? true : false,
         create_time: el.history_id,
         history_id: el.history_id,
-        lap_num: el.lap_num
+        lap_num: el.lap_num,
+        order_num: el.order_num,
+        score: el.score
       })
       console.log(`Added run ${entry.history_id}`);
       entries++;
